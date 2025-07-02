@@ -37,9 +37,7 @@ export const signup = async (req, res) => {
     // TODO: Create the user in stream as well
 
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: '3d' });
-    console.log( "token", token);
-    
-
+   
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -47,19 +45,47 @@ export const signup = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
     });
 
-    res.status(201).json({success: true, message: "User created successfully", user: newUser});
+    res.status(201).json({ success: true, message: "User created successfully", user: newUser });
 
   } catch (error) {
     console.error("Error in signup controller :", error);
-    res.status(500).json({ message: "Internal server error" }); 
+    res.status(500).json({ message: "Internal server error" });
   }
 
 };
 
 export const login = async (req, res) => {
-  res.send("Login route: Authenticate a user");
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    
+    const user = await User.findOne({ email });
+    if(!user) return res.status(400).json({ message: "Invalid email or password" });
+
+    const isPasswordValid = await user.matchPassword(password)
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '3d' });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+    });
+
+    res.status(200).json({success:true, user})
+
+  } catch (error) {
+    console.error("Error in login controller:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 export async function logout(req, res) {
-  res.send("Logout Route")
+  res.clearCookie("jwt");
+  res.status(200).json({ success: true, message: "Logged out successfully" });  
 }
