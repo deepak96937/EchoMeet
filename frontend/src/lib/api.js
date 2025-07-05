@@ -10,6 +10,16 @@ export const signup = async (signupData) => {
   }
 };
 
+export const login = async (loginData) => {
+  try {
+    const response = await axiosInstance.post("/auth/login", loginData);
+    return response.data;
+  } catch (error) {
+    // Forward the error to be caught by React Query or caller
+    throw error.response?.data || error;
+  }
+};
+
 
 
 export const getAuthUser = async () => {
