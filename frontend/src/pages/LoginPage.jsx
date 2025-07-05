@@ -2,7 +2,7 @@ import React from 'react'
 
 const LoginPage = () => {
   return (
-    <div>LoginPage</div>
+    <div><span className=" loading loading-spinner loading-xs"></span></div>
   )
 }
 
