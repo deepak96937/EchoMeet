@@ -10,4 +10,19 @@ export const signup = async (signupData) => {
   }
 };
 
-         
+
+
+export const getAuthUser = async () => {
+  const res = await axiosInstance.get("auth/me");
+  return res.data;
+}
+
+export const completeOnboarding = async (userData) => {
+  try {
+    const response = await axiosInstance.post("/auth/onboarding", userData);
+    return response.data;
+  } catch (error) {
+    // Forward the error to be caught by React Query or caller
+    throw error.response?.data || error;
+  }
+};
