@@ -10,6 +10,7 @@ import NotificationPage from "./pages/NotificationPage";
 import SignUpPage from "./pages/SignUpPage";
 import PageLoader from "./components/PageLoader";
 import useAuthUser from "./hooks/useAuthUser";
+import Layout from "./components/Layout";
 
 const App = () => {
 
@@ -27,7 +28,9 @@ const App = () => {
         <Route
           path="/"
           element={isAuthenticated && isOnboarded ? (
-            <HomePage/>
+            <Layout>
+              <HomePage/>
+            </Layout>
           ): (
             <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
           )}
