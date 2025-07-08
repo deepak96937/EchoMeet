@@ -15,7 +15,7 @@ export const THEMES = [
         colors: ["#f5f5f4", "#65c3c8", "#ef9fbc", "#291334"],
     },
     {
-        name: "forest",
+        name: "fsorest",
         label: "Forest",
         colors: ["#1f1d1d", "#3ebc96", "#70c217", "#e2e8f0"],
     },

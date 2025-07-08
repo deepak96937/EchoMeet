@@ -11,8 +11,10 @@ import SignUpPage from "./pages/SignUpPage";
 import PageLoader from "./components/PageLoader";
 import useAuthUser from "./hooks/useAuthUser";
 import Layout from "./components/Layout";
+import { useThemeStore } from "./store/useThemeStore";
 
 const App = () => {
+  const {theme} =useThemeStore()
 
   const {isLoading, authUser} = useAuthUser();
 
@@ -23,7 +25,7 @@ const App = () => {
   if (isLoading) return <PageLoader />;
   
   return (
-    <div className=" min-h-screen" data-theme="night">
+    <div className=" min-h-screen" data-theme={theme}>
       <Routes>
         <Route
           path="/"
